@@ -35,7 +35,7 @@ def generate_launch_description():
 
     # Create a robot_state_publisher node
     xacro_file = PathJoinSubstitution([
-        pkg_share, 'desciption', 'robot.2wd.urdf.xacro'])
+        pkg_share, 'description', 'robot.2wd.urdf.xacro'])
     robot_description_config = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
         ' ',

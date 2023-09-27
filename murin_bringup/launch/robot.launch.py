@@ -25,7 +25,7 @@ def generate_launch_description():
         PathJoinSubstitution([FindExecutable(name="xacro")]),
         " ",
         PathJoinSubstitution(
-            [pkg_share, "desciption", "robot.urdf.xacro"]),
+            [pkg_share, "description", "robot.urdf.xacro"]),
     ])
 
     robot_description = {'robot_description': robot_description_content}
@@ -53,6 +53,13 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster",
+                   "--controller-manager", "/controller_manager"],
+    )
+
+    imu_sensor_broadcaster_spawner_node = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["imu_sensor_broadcaster",
                    "--controller-manager", "/controller_manager"],
     )
 
@@ -108,6 +115,7 @@ def generate_launch_description():
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner_node,
+        imu_sensor_broadcaster_spawner_node,
         delayed_robot_controller_spawner,
         # delay_rviz_after_joint_state_broadcaster_spawner,
         joy_node,

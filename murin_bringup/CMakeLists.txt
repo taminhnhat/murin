@@ -36,7 +36,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config desciption launch gazebo rtabmap worlds
+  DIRECTORY config description launch gazebo rtabmap worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

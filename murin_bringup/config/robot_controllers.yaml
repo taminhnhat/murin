@@ -8,6 +8,9 @@ controller_manager:
     diffbot_base_controller:
       type: diff_drive_controller/DiffDriveController
 
+    imu_sensor_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
 diffbot_base_controller:
   ros__parameters:
     left_wheel_names: ["rear_left_wheel_joint","front_left_wheel_joint"]
@@ -55,3 +58,12 @@ diffbot_base_controller:
     angular.z.min_acceleration: -8.0
     angular.z.max_jerk: 0.0
     angular.z.min_jerk: 0.0
+
+joint_state_broadcaster:
+  ros__parameters:
+    use_local_topics: false
+    
+imu_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: mpu6050
+    frame_id: imu_link

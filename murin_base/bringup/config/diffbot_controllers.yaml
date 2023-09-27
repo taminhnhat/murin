@@ -67,4 +67,3 @@ imu_sensor_broadcaster:
   ros__parameters:
     sensor_name: mpu6050
     frame_id: imu_link
-    use_local_topics: false
