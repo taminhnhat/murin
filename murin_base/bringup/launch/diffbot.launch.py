@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler
+from launch.actions import RegisterEventHandler, DeclareLaunchArgument
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -50,6 +50,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[robot_description, robot_controllers],
+        arguments=['--ros-args', '--log-level', LaunchConfiguration('log_level')],
         output="both",
     )
     robot_state_pub_node = Node(
@@ -75,6 +76,7 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster",
                    "--controller-manager", "/controller_manager"],
     )
+    
     imu_sensor_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -106,6 +108,7 @@ def generate_launch_description():
     )
 
     nodes = [
+        DeclareLaunchArgument(name='log_level', default_value='info',description=''),
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner,

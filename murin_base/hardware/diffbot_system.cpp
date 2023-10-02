@@ -222,14 +222,14 @@ namespace murin_base
       bool parsingSuccessful = reader.parse(read_str, root);
       if (!parsingSuccessful)
       {
-        std::cout << "Error parsing the string" << std::endl;
+        RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Error parsing the string from serial");
         return hardware_interface::return_type::OK;
       }
 
       // const int battery = root["battery"].asDouble();
       if (pipe_.writeLine(read_str, false) == -1)
       {
-        // RCLCPP_WARN(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to pipe! Closed pipe.");
+        RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
       }
       const auto velocity = root["vel"];
@@ -285,8 +285,8 @@ namespace murin_base
     char cmd[100];
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg = cmd;
-    // if (!comms_.write_hardware_command(msg, false))
-    // RCLCPP_WARN(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+    if (!comms_.write_hardware_command(msg, false))
+      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
     return hardware_interface::return_type::OK;
   }
 
