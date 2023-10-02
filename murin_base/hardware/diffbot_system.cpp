@@ -45,7 +45,6 @@ namespace murin_base
     cfg_.device = info_.hardware_parameters["device"];
     cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
     cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
-    cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
     if (info_.hardware_parameters.count("pid_p") > 0)
     {
       cfg_.pid_p = std::stoi(info_.hardware_parameters["pid_p"]);
@@ -58,10 +57,10 @@ namespace murin_base
       RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "PID values not supplied, using defaults.");
     }
 
-    wheel_rear_l_.setup(cfg_.rear_left_wheel_name, cfg_.enc_counts_per_rev);
-    wheel_front_l_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev);
-    wheel_rear_r_.setup(cfg_.rear_right_wheel_name, cfg_.enc_counts_per_rev);
-    wheel_front_r_.setup(cfg_.front_right_wheel_name, cfg_.enc_counts_per_rev);
+    wheel_rear_l_.setup(cfg_.rear_left_wheel_name);
+    wheel_front_l_.setup(cfg_.front_left_wheel_name);
+    wheel_rear_r_.setup(cfg_.rear_right_wheel_name);
+    wheel_front_r_.setup(cfg_.front_right_wheel_name);
 
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
@@ -262,7 +261,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
     }
 
     return hardware_interface::return_type::OK;
