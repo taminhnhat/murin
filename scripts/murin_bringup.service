@@ -1,0 +1,13 @@
+[Unit]
+Description=GATEWAY process service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nhattm/dev-ws
+ExecStart=/home/nhattm/dev-ws/src/murin/scripts/murin_bringup.sh
+Restart=on-failure
+StandardOutput=/home/nhattm/.murin/murin_bringup.log
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target

@@ -61,6 +61,9 @@ def generate_launch_description():
         executable="spawner",
         arguments=["imu_sensor_broadcaster",
                    "--controller-manager", "/controller_manager"],
+        remappings=[
+            ("/imu_sensor_broadcaster/imu", "/imu"),
+        ],
     )
 
     robot_controller_spawner = Node(
