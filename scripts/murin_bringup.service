@@ -6,7 +6,7 @@ Type=simple
 WorkingDirectory=/home/nhattm/dev-ws
 ExecStart=/home/nhattm/dev-ws/src/murin/scripts/murin_bringup.sh
 Restart=on-failure
-StandardOutput=/home/nhattm/.murin/murin_bringup.log
+StandardOutput=file:/home/nhattm/.murin/murin_bringup.log
 
 [Install]
 WantedBy=default.target
