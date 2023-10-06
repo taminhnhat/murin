@@ -1,0 +1,12 @@
+[Unit]
+Description=ros2 websocket process service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nhattm/dev-ws
+ExecStart=/home/nhattm/dev-ws/src/murin/scripts/murin_websocket.sh
+Restart=on-failure
+StandardOutput=file:/home/nhattm/.murin/murin_websocket.log
+
+[Install]
+WantedBy=default.target
