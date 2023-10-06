@@ -36,6 +36,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[robot_description, robot_controller],
+        arguments=['--ros-args', '--log-level', LaunchConfiguration('log_level')],
         output="both",
     )
 
@@ -113,8 +114,8 @@ def generate_launch_description():
     # Launch them all!
     # ld = LaunchDescription()
     return LaunchDescription([
-        DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,
-                              description='Absolute path to rviz config file'),
+        DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,description='Absolute path to rviz config file'),
+        DeclareLaunchArgument(name='log_level', default_value='info',description=''),
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner_node,
