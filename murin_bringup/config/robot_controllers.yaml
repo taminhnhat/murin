@@ -31,7 +31,7 @@ diffbot_base_controller:
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
     open_loop: true
-    enable_odom_tf: false
+    enable_odom_tf: true
 
     cmd_vel_timeout: 0.5
     #publish_limited_velocity: true
@@ -66,4 +66,4 @@ joint_state_broadcaster:
 imu_sensor_broadcaster:
   ros__parameters:
     sensor_name: mpu6050
-    frame_id: imu_link
+    frame_id: camera_link

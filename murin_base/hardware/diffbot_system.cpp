@@ -170,8 +170,11 @@ namespace murin_base
       comms_.disconnect();
     }
     comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
+    if (!comms_.connected())
+    {
+      return hardware_interface::CallbackReturn::ERROR;
+    }
     RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Successfully configured!");
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -274,9 +277,6 @@ namespace murin_base
       return hardware_interface::return_type::ERROR;
     }
 
-    // int motor_l_counts_per_loop = wheel_l_.cmd / wheel_l_.rads_per_count / cfg_.loop_rate;
-    // int motor_r_counts_per_loop = wheel_r_.cmd / wheel_r_.rads_per_count / cfg_.loop_rate;
-    // comms_.set_motor_values(motor_r_counts_per_loop, motor_l_counts_per_loop);
     double front_right_vel = wheel_front_r_.cmd;
     double rear_right_vel = wheel_rear_r_.cmd;
     double front_left_vel = wheel_front_l_.cmd;
