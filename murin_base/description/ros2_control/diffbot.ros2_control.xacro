@@ -15,6 +15,7 @@
         <!-- <param name="device">/dev/cp2104</param> -->
         <param name="baud_rate">115200</param>
         <param name="timeout_ms">1000</param>
+        <param name="reconnect_timeout_ms">1000</param>
       </hardware>
 
       <joint name="${prefix}rear_left_wheel_joint">

@@ -48,11 +48,18 @@ class ArduinoComms
 public:
   ArduinoComms() = default;
 
-  void connect(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms)
+  void init(const std::string &serial_device, int32_t baud_rate = 112500, int32_t timeout_ms = 1000, int32_t reconnect_timeout_ms = 5000)
   {
-    timeout_ms_ = timeout_ms;
-    serial_conn_.Open(serial_device);
-    serial_conn_.SetBaudRate(convert_baud_rate(baud_rate));
+    this->timeout_ms_ = timeout_ms;
+    this->baud_rate_ = baud_rate;
+    this->serial_device_ = serial_device;
+    this->reconnect_timeout_ms_ = reconnect_timeout_ms;
+  }
+
+  void connect()
+  {
+    serial_conn_.Open(this->serial_device_);
+    serial_conn_.SetBaudRate(convert_baud_rate(this->baud_rate_));
     serial_conn_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
     serial_conn_.SetFlowControl(LibSerial::FlowControl::FLOW_CONTROL_NONE);
     serial_conn_.SetStopBits(LibSerial::StopBits::STOP_BITS_1);
@@ -155,7 +162,10 @@ public:
 
 private:
   LibSerial::SerialPort serial_conn_;
-  int timeout_ms_;
+  std::string serial_device_ = "";
+  int32_t baud_rate_;
+  int32_t timeout_ms_;
+  int32_t reconnect_timeout_ms_;
 };
 
 #endif // MURIN_BASE_ARDUINO_COMMS_HPP

@@ -52,6 +52,7 @@ namespace murin_base
       std::string device = "";
       int baud_rate = 0;
       int timeout_ms = 0;
+      int reconnect_timeout_ms = 5000;
       int enc_counts_per_rev = 0;
       int pid_p = 0;
       int pid_d = 0;

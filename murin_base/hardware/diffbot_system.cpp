@@ -169,7 +169,8 @@ namespace murin_base
     {
       comms_.disconnect();
     }
-    comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
+    comms_.init(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
+    comms_.connect();
     if (!comms_.connected())
     {
       return hardware_interface::CallbackReturn::ERROR;
