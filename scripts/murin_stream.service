@@ -1,0 +1,13 @@
+[Unit]
+Description=murin stream service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nhattm/dev-ws
+ExecStart=/home/nhattm/dev-ws/src/murin/scripts/murin_stream.sh
+Restart=on-failure
+StandardOutput=file:/home/nhattm/.murin/murin_stream.log
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target
