@@ -79,35 +79,35 @@ public:
   bool read_hardware_states(std::string &str_out, bool print_output = false)
   {
     serial_conn_.FlushIOBuffers();
-    std::string send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
-    std::string read_str = "";
-    serial_conn_.Write(send_str);
+    std::string _read_str = "";
+    std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
+    serial_conn_.Write(_send_str);
     try
     {
-      serial_conn_.ReadLine(read_str, '\n', 100);
+      serial_conn_.ReadLine(_read_str, '\n', 100);
     }
     catch (const LibSerial::ReadTimeout &)
     {
       // std::cerr << "The ReadByte() call has timed out." << std::endl;
-      // read_str = "read timeout!\n";
+      // _read_str = "read timeout!\n";
       return false;
     }
     if (print_output)
     {
-      std::cout << "==> " << send_str;
-      std::cout << "<== " << read_str;
+      std::cout << "==> " << _send_str;
+      std::cout << "<== " << _read_str;
     }
-    std::size_t startIndex = read_str.find('{');
-    std::size_t stopIndex = read_str.find('}');
-    // std::cout << startIndex << " - " << stopIndex << std::endl;
+    std::size_t startIndex = _read_str.find_first_of("{");
+    std::size_t stopIndex = _read_str.find_last_of("}");
+    // std::cout << _read_str.length() << " - " << startIndex << " - " << stopIndex << std::endl;
 
     if (startIndex != std::string::npos && stopIndex != std::string::npos)
     {
       uLong crc_value = 0;
-      std::string crc_str = read_str.substr(0, startIndex);
+      std::string crc_str = _read_str.substr(0, startIndex);
       crc_value = std::stoul(crc_str);
 
-      std::string str_to_parse = read_str.substr(startIndex, stopIndex - startIndex + 1);
+      std::string str_to_parse = _read_str.substr(startIndex, stopIndex - startIndex + 1);
       // std::cout << crc_str << " - " << str_to_parse << std::endl;
       uLong crc_cal = crc32(0L, Z_NULL, 0);
 
@@ -116,6 +116,8 @@ public:
 
       crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
       // std::cout << crc_value << " - " << crc_cal << std::endl;
+      // std::cout << "string: " << _read_str << " - " << _read_str.length() << std::endl;
+      // std::cout << "parsing: " << str_to_parse << " - " << str_to_parse.length() << std::endl;
       if (crc_value == crc_cal)
       {
         str_out = str_to_parse;
