@@ -1,0 +1,13 @@
+[Unit]
+Description=realsense process service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nhattm/dev-ws
+ExecStart=/home/nhattm/dev-ws/src/murin/scripts/murin_realsense.sh
+Restart=on-failure
+StandardOutput=file:/home/nhattm/.murin/murin_realsense.log
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target
