@@ -8,6 +8,8 @@ Panels:
         - /Status1
         - /RobotModel1
         - /TF1
+        - /TF1/Frames1
+        - /TF1/Tree1/odom1
         - /Imu1
       Splitter Ratio: 0.5
     Tree Height: 719
@@ -137,17 +139,23 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         base_footprint:
-          Value: true
+          Value: false
         base_link:
           Value: true
+        camera_color_frame:
+          Value: false
+        camera_color_optical_frame:
+          Value: false
         camera_depth_frame:
-          Value: true
+          Value: false
+        camera_depth_optical_frame:
+          Value: false
         camera_link:
           Value: true
         chassis:
-          Value: true
+          Value: false
         front_left_wheel:
           Value: true
         front_right_wheel:
@@ -155,8 +163,10 @@ Visualization Manager:
         imu_link:
           Value: true
         laser_frame:
-          Value: true
+          Value: false
         lidar_link:
+          Value: true
+        odom:
           Value: true
         rear_left_wheel:
           Value: true
@@ -168,28 +178,33 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_link:
-          base_footprint:
-            {}
-          camera_link:
-            camera_depth_frame:
+        odom:
+          base_link:
+            base_footprint:
               {}
-          chassis:
-            {}
-          front_left_wheel:
-            {}
-          front_right_wheel:
-            {}
-          imu_link:
-            {}
-          laser_frame:
-            {}
-          lidar_link:
-            {}
-          rear_left_wheel:
-            {}
-          rear_right_wheel:
-            {}
+            camera_link:
+              camera_color_frame:
+                camera_color_optical_frame:
+                  {}
+              camera_depth_frame:
+                camera_depth_optical_frame:
+                  {}
+            chassis:
+              {}
+            front_left_wheel:
+              {}
+            front_right_wheel:
+              {}
+            imu_link:
+              {}
+            laser_frame:
+              {}
+            lidar_link:
+              {}
+            rear_left_wheel:
+              {}
+            rear_right_wheel:
+              {}
       Update Interval: 0
       Value: true
     - Acceleration properties:
@@ -266,25 +281,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.6488233804702759
+      Distance: 0.9495155811309814
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.018122510984539986
+        Y: 0.054737869650125504
+        Z: -0.022350378334522247
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.12960104644298553
+      Pitch: 0.5653988122940063
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.485377550125122
+      Yaw: 0.04349568858742714
     Saved: ~
 Window Geometry:
   Displays:
