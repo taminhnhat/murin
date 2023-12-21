@@ -98,7 +98,7 @@ def generate_launch_description():
     joy_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             pkg_share, 'launch', 'joystick.launch.py'
-        )]), launch_arguments={'use_sim_time': 'false'}.items()
+        )]), launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')}.items()
     )
 
     twist_mux_params = os.path.join(
@@ -111,16 +111,26 @@ def generate_launch_description():
             ('/cmd_vel_out', '/diffbot_base_controller/cmd_vel_unstamped')]
     )
 
+    robot_localization_node = Node(
+       package='robot_localization',
+       executable='ekf_node',
+       name='ekf_filter_node',
+       output='screen',
+       parameters=[os.path.join(pkg_share, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
+    )
+
     # Launch them all!
     # ld = LaunchDescription()
     return LaunchDescription([
         DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,description='Absolute path to rviz config file'),
         DeclareLaunchArgument(name='log_level', default_value='info',description=''),
+        DeclareLaunchArgument(name='use_sim_time', default_value='false',description=''),
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner_node,
         imu_sensor_broadcaster_spawner_node,
         delayed_robot_controller_spawner,
+        # robot_localization_node,
         # delay_rviz_after_joint_state_broadcaster_spawner,
         joy_node,
         twist_mux_node,
