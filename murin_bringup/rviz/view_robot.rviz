@@ -9,7 +9,7 @@ Panels:
         - /TF1
         - /TF1/Frames1
         - /Imu1
-        - /Imu1/Box properties1
+        - /Imu1/Acceleration properties1
         - /LaserScan1/Topic1
         - /Raw Image1
         - /Raw Image1/Topic1
@@ -200,9 +200,9 @@ Visualization Manager:
       Update Interval: 0
       Value: true
     - Acceleration properties:
-        Acc. vector alpha: 0.4000000059604645
-        Acc. vector color: 220; 138; 221
-        Acc. vector scale: 0.10000000149011612
+        Acc. vector alpha: 0.20000000298023224
+        Acc. vector color: 255; 255; 255
+        Acc. vector scale: 0.05999999865889549
         Derotate acceleration: true
         Enable acceleration: true
       Axes properties:
@@ -326,7 +326,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -369,7 +369,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.533618450164795
+      Distance: 1.9984734058380127
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -384,10 +384,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.25479841232299805
+      Pitch: 0.42479825019836426
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.891601085662842
+      Yaw: 5.021585464477539
     Saved: ~
 Window Geometry:
   Displays:
