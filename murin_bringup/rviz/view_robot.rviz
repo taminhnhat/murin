@@ -1,11 +1,12 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 78
+    Help Height: 172
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
+        - /RobotModel1
         - /TF1
         - /TF1/Frames1
         - /Imu1
@@ -14,7 +15,7 @@ Panels:
         - /Raw Image1
         - /Raw Image1/Topic1
       Splitter Ratio: 0.5
-    Tree Height: 719
+    Tree Height: 625
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -54,7 +55,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Alpha: 0.800000011920929
+    - Alpha: 1
       Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
       Description File: ""
@@ -369,25 +370,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.9984734058380127
+      Distance: 1.186698317527771
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.2360263168811798
-        Y: 0.17729510366916656
-        Z: 0.17671214044094086
+        X: 0.12732043862342834
+        Y: -0.021732276305556297
+        Z: 0.10969708114862442
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.42479825019836426
+      Pitch: 0.514798104763031
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.021585464477539
+      Yaw: 0.8634392023086548
     Saved: ~
 Window Geometry:
   Displays:

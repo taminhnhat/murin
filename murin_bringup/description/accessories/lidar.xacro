@@ -20,7 +20,8 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder radius="0.017" length="0.014"/>
+                <mesh filename="package://murin_bringup/description/meshes/lidar_link.STL" />
+                <!-- <cylinder radius="0.017" length="0.014"/> -->
             </geometry>
         </visual>
     </link>

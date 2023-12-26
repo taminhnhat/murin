@@ -61,15 +61,16 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 ${-chassis_offset_z}"/>
+        <origin xyz="0 0 0"/>
     </joint>
 
     <link name="chassis">
         <!-- chassis visual -->
         <visual>
-            <origin xyz="0 0 ${chassis_height/2}"/>
+            <origin xyz="0 0 0"/>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <mesh filename="package://murin_bringup/description/meshes/base_link.STL" />
+                <!-- <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> -->
             </geometry>
             <material name="white"/>
         </visual>
