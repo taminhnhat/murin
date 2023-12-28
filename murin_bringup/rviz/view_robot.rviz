@@ -7,6 +7,8 @@ Panels:
         - /Global Options1
         - /Status1
         - /RobotModel1
+        - /RobotModel1/Links1
+        - /RobotModel1/Links1/chassis1
         - /TF1
         - /TF1/Frames1
         - /Imu1
@@ -106,11 +108,6 @@ Visualization Manager:
           Show Trail: false
           Value: true
         imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        laser_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -327,7 +324,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -370,25 +367,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.186698317527771
+      Distance: 0.6069278120994568
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.12732043862342834
-        Y: -0.021732276305556297
-        Z: 0.10969708114862442
+        X: -0.002137030940502882
+        Y: -0.08989661931991577
+        Z: -0.027618909254670143
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.514798104763031
+      Pitch: 0.48979783058166504
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.8634392023086548
+      Yaw: 1.604691505432129
     Saved: ~
 Window Geometry:
   Displays:
