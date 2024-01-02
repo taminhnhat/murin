@@ -39,7 +39,7 @@
 
 namespace murin_base
 {
-  class MurinBaseHardware : public hardware_interface::SystemInterface
+  class murin_base_hardware : public hardware_interface::SystemInterface
   {
 
     struct Config
@@ -61,7 +61,7 @@ namespace murin_base
     };
 
   public:
-    RCLCPP_SHARED_PTR_DEFINITIONS(MurinBaseHardware);
+    RCLCPP_SHARED_PTR_DEFINITIONS(murin_base_hardware);
 
     MURIN_BASE_PUBLIC
     hardware_interface::CallbackReturn on_init(

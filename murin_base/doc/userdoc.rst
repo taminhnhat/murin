@@ -96,8 +96,8 @@ Tutorial steps
 
    .. code-block:: shell
 
-    [MurinBaseHardware]: Got command 43.33333 for 'left_wheel_joint'!
-    [MurinBaseHardware]: Got command 50.00000 for 'right_wheel_joint'!
+    [murin_base_hardware]: Got command 43.33333 for 'left_wheel_joint'!
+    [murin_base_hardware]: Got command 50.00000 for 'right_wheel_joint'!
 
 Files used for this demos
 #########################

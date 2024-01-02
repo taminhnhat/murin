@@ -5,7 +5,7 @@
 
     <ros2_control name="${name}" type="system">
       <hardware>
-        <plugin>murin_base/MurinBaseHardware</plugin>
+        <plugin>murin_base/murin_base_hardware</plugin>
         <param name="front_left_wheel_name">front_left_wheel_joint</param>
         <param name="rear_left_wheel_name">rear_left_wheel_joint</param>
         <param name="front_right_wheel_name">front_right_wheel_joint</param>

@@ -26,7 +26,7 @@
 
 namespace murin_base
 {
-  hardware_interface::CallbackReturn MurinBaseHardware::on_init(const hardware_interface::HardwareInfo &info)
+  hardware_interface::CallbackReturn murin_base_hardware::on_init(const hardware_interface::HardwareInfo &info)
   {
     if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS)
     {
@@ -54,7 +54,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "PID values not supplied, using defaults.");
+      RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "PID values not supplied, using defaults.");
     }
 
     wheel_rear_l_.setup(cfg_.rear_left_wheel_name);
@@ -68,7 +68,7 @@ namespace murin_base
       if (joint.command_interfaces.size() != 1)
       {
         RCLCPP_FATAL(
-            rclcpp::get_logger("MurinBaseHardware"),
+            rclcpp::get_logger("murin_base_hardware"),
             "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
             joint.command_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
@@ -77,7 +77,7 @@ namespace murin_base
       if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            rclcpp::get_logger("MurinBaseHardware"),
+            rclcpp::get_logger("murin_base_hardware"),
             "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
             joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
@@ -86,7 +86,7 @@ namespace murin_base
       if (joint.state_interfaces.size() != 2)
       {
         RCLCPP_FATAL(
-            rclcpp::get_logger("MurinBaseHardware"),
+            rclcpp::get_logger("murin_base_hardware"),
             "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
             joint.state_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
@@ -95,7 +95,7 @@ namespace murin_base
       if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
       {
         RCLCPP_FATAL(
-            rclcpp::get_logger("MurinBaseHardware"),
+            rclcpp::get_logger("murin_base_hardware"),
             "Joint '%s' have '%s' as first state interface. '%s' expected.", joint.name.c_str(),
             joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
         return hardware_interface::CallbackReturn::ERROR;
@@ -104,7 +104,7 @@ namespace murin_base
       if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            rclcpp::get_logger("MurinBaseHardware"),
+            rclcpp::get_logger("murin_base_hardware"),
             "Joint '%s' have '%s' as second state interface. '%s' expected.", joint.name.c_str(),
             joint.state_interfaces[1].name.c_str(), hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
@@ -114,7 +114,7 @@ namespace murin_base
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  std::vector<hardware_interface::StateInterface> MurinBaseHardware::export_state_interfaces()
+  std::vector<hardware_interface::StateInterface> murin_base_hardware::export_state_interfaces()
   {
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
@@ -147,7 +147,7 @@ namespace murin_base
     return state_interfaces;
   }
 
-  std::vector<hardware_interface::CommandInterface> MurinBaseHardware::export_command_interfaces()
+  std::vector<hardware_interface::CommandInterface> murin_base_hardware::export_command_interfaces()
   {
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
@@ -162,9 +162,9 @@ namespace murin_base
     return command_interfaces;
   }
 
-  hardware_interface::CallbackReturn MurinBaseHardware::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
+  hardware_interface::CallbackReturn murin_base_hardware::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
   {
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Configuring ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Configuring ...please wait...");
     if (comms_.connected())
     {
       comms_.disconnect();
@@ -175,43 +175,43 @@ namespace murin_base
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Successfully configured!");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn MurinBaseHardware::on_cleanup(const rclcpp_lifecycle::State & /*previous_state*/)
+  hardware_interface::CallbackReturn murin_base_hardware::on_cleanup(const rclcpp_lifecycle::State & /*previous_state*/)
   {
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Cleaning up ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Cleaning up ...please wait...");
     if (comms_.connected())
     {
       comms_.disconnect();
     }
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Successfully cleaned up!");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully cleaned up!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn MurinBaseHardware::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
+  hardware_interface::CallbackReturn murin_base_hardware::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
   {
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Activating ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Activating ...please wait...");
     if (!comms_.connected())
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Successfully activated!");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully activated!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn MurinBaseHardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
+  hardware_interface::CallbackReturn murin_base_hardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
   {
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Deactivating ...please wait...");
-    RCLCPP_INFO(rclcpp::get_logger("MurinBaseHardware"), "Successfully deactivated!");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Deactivating ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully deactivated!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::return_type MurinBaseHardware::read(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
+  hardware_interface::return_type murin_base_hardware::read(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
   {
     if (!comms_.connected())
     {
@@ -220,20 +220,20 @@ namespace murin_base
     std::string read_str = "";
     if (comms_.read_hardware_states(read_str, false))
     {
-      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "<<< %s", read_str.c_str());
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "<<< %s", read_str.c_str());
       Json::Value root;
       Json::Reader reader;
       bool parsingSuccessful = reader.parse(read_str, root);
       if (!parsingSuccessful)
       {
-        RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Error parsing the string from serial");
+        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
         return hardware_interface::return_type::OK;
       }
 
       // const int battery = root["battery"].asDouble();
       if (pipe_.writeLine(read_str, false) == -1)
       {
-        RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to pipe! Closed pipe.");
+        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
       }
       const auto velocity = root["vel"];
@@ -266,13 +266,13 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Fail writing to serial!");
     }
 
     return hardware_interface::return_type::OK;
   }
 
-  hardware_interface::return_type murin_base ::MurinBaseHardware::write(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
+  hardware_interface::return_type murin_base ::murin_base_hardware::write(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
   {
     if (!comms_.connected())
     {
@@ -287,9 +287,9 @@ namespace murin_base
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg = cmd;
     if (!comms_.write_hardware_command(msg, false))
-      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to serial!");
     else
-      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), ">>> %s", msg.c_str());
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), ">>> %s", msg.c_str());
     return hardware_interface::return_type::OK;
   }
 
@@ -297,5 +297,5 @@ namespace murin_base
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-    murin_base::MurinBaseHardware,
+    murin_base::murin_base_hardware,
     hardware_interface::SystemInterface)
