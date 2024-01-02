@@ -220,6 +220,7 @@ namespace murin_base
     std::string read_str = "";
     if (comms_.read_hardware_states(read_str, false))
     {
+      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "<<< %s", read_str.c_str());
       Json::Value root;
       Json::Reader reader;
       bool parsingSuccessful = reader.parse(read_str, root);
@@ -265,7 +266,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+      RCLCPP_WARN(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
     }
 
     return hardware_interface::return_type::OK;
@@ -287,6 +288,8 @@ namespace murin_base
     std::string msg = cmd;
     if (!comms_.write_hardware_command(msg, false))
       RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), "Fail writing to serial!");
+    else
+      RCLCPP_DEBUG(rclcpp::get_logger("MurinBaseHardware"), ">>> %s", msg.c_str());
     return hardware_interface::return_type::OK;
   }
 
