@@ -218,7 +218,7 @@ namespace murin_base
       return hardware_interface::return_type::ERROR;
     }
     std::string read_str = "";
-    if (comms_.read_hardware_states(read_str, false))
+    if (comms_.read_hardware_states(read_str, true))
     {
       RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "<<< %s", read_str.c_str());
       Json::Value root;
@@ -266,7 +266,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Fail writing to serial!");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Robot bridge not responding");
     }
 
     return hardware_interface::return_type::OK;
@@ -286,10 +286,9 @@ namespace murin_base
     char cmd[100];
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg = cmd;
-    if (!comms_.write_hardware_command(msg, false))
-      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to serial!");
-    else
-      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), ">>> %s", msg.c_str());
+    if (!comms_.write_hardware_command(msg, true))
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Robot bridge not responding");
+    RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), ">>> %s", msg.c_str());
     return hardware_interface::return_type::OK;
   }
 
