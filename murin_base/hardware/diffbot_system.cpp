@@ -218,9 +218,9 @@ namespace murin_base
       return hardware_interface::return_type::ERROR;
     }
     std::string read_str = "";
-    if (comms_.read_hardware_states(read_str, true))
+    if (comms_.read_hardware_states(read_str, false))
     {
-      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "<<< %s", read_str.c_str());
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", read_str.c_str());
       Json::Value root;
       Json::Reader reader;
       bool parsingSuccessful = reader.parse(read_str, root);
@@ -230,12 +230,14 @@ namespace murin_base
         return hardware_interface::return_type::OK;
       }
 
-      // const int battery = root["battery"].asDouble();
       if (pipe_.writeLine(read_str, false) == -1)
       {
         RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
       }
+
+      // const int battery = root["battery"].asDouble();
+
       const auto velocity = root["vel"];
       wheel_front_r_.vel = velocity[0].asDouble();
       wheel_rear_r_.vel = velocity[1].asDouble();
@@ -266,7 +268,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Robot bridge not responding");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge not responding");
     }
 
     return hardware_interface::return_type::OK;
@@ -285,10 +287,11 @@ namespace murin_base
     double rear_left_vel = wheel_rear_l_.cmd;
     char cmd[100];
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
-    std::string msg = cmd;
-    if (!comms_.write_hardware_command(msg, true))
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "Robot bridge not responding");
-    RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), ">>> %s", msg.c_str());
+    std::string msg(cmd);
+    if (!comms_.write_hardware_command(msg, false))
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot bridge not responding");
+    else
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Writing] >>> %s", msg.c_str());
     return hardware_interface::return_type::OK;
   }
 

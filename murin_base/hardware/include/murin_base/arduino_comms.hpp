@@ -78,13 +78,13 @@ public:
 
   bool read_hardware_states(std::string &str_out, bool print_output = false)
   {
-    serial_conn_.FlushIOBuffers();
+    // serial_conn_.FlushIOBuffers();
     std::string _read_str = "";
     std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
     serial_conn_.Write(_send_str);
     try
     {
-      serial_conn_.ReadLine(_read_str, '\n', 100);
+      serial_conn_.ReadLine(_read_str, '\n', 500);
     }
     catch (const LibSerial::ReadTimeout &)
     {
@@ -111,7 +111,7 @@ public:
       // std::cout << crc_str << " - " << str_to_parse << std::endl;
       uLong crc_cal = crc32(0L, Z_NULL, 0);
 
-      std::byte bytes[str_to_parse.length()];
+      unsigned char bytes[str_to_parse.length()];
       std::memcpy(bytes, str_to_parse.data(), str_to_parse.length());
 
       crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
@@ -134,18 +134,22 @@ public:
   {
     uLong crc_cal = crc32(0L, Z_NULL, 0);
 
-    std::byte bytes[msg_to_send.length()];
+    unsigned char bytes[msg_to_send.length()];
     std::memcpy(bytes, msg_to_send.data(), msg_to_send.length());
 
     crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
-    std::string msg_to_serial = std::to_string(crc_cal) + msg_to_send + "\r\n";
-    serial_conn_.FlushOutputBuffer();
+    const std::string msg_to_serial = std::to_string(crc_cal) + msg_to_send + "\r\n";
+    // std::cout << "send: " << msg_to_serial;
+    // serial_conn_.FlushIOBuffers();
+    // serial_conn_.FlushOutputBuffer();
     serial_conn_.Write(msg_to_serial);
+    // std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
+    // serial_conn_.Write(_send_str);
 
     std::string response = "";
     try
     {
-      serial_conn_.ReadLine(response, '\n', 100);
+      serial_conn_.ReadLine(response, '\n', 500);
     }
     catch (const LibSerial::ReadTimeout &)
     {
@@ -155,8 +159,8 @@ public:
 
     if (print_output)
     {
-      std::cout << "==> " << msg_to_serial;
-      std::cout << "<== " << response;
+      // std::cout << "==> " << msg_to_serial;
+      // std::cout << "<== " << response;
     }
 
     return true;
