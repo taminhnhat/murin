@@ -268,7 +268,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge not responding");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge drop");
     }
 
     return hardware_interface::return_type::OK;
@@ -289,9 +289,10 @@ namespace murin_base
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg(cmd);
     if (!comms_.write_hardware_command(msg, false))
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot bridge not responding");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot bridge drop");
     else
       RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Writing] >>> %s", msg.c_str());
+
     return hardware_interface::return_type::OK;
   }
 

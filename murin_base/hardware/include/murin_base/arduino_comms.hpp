@@ -36,6 +36,8 @@ LibSerial::BaudRate convert_baud_rate(int baud_rate)
     return LibSerial::BaudRate::BAUD_115200;
   case 230400:
     return LibSerial::BaudRate::BAUD_230400;
+  case 460800:
+    return LibSerial::BaudRate::BAUD_460800;
   default:
     std::cout << "Error! Baud rate " << baud_rate << " not supported! Default to 57600" << std::endl;
     return LibSerial::BaudRate::BAUD_57600;
@@ -61,7 +63,7 @@ public:
     serial_conn_.Open(this->serial_device_);
     serial_conn_.SetBaudRate(convert_baud_rate(this->baud_rate_));
     serial_conn_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
-    serial_conn_.SetFlowControl(LibSerial::FlowControl::FLOW_CONTROL_NONE);
+    serial_conn_.SetFlowControl(LibSerial::FlowControl::FLOW_CONTROL_SOFTWARE);
     serial_conn_.SetStopBits(LibSerial::StopBits::STOP_BITS_1);
     serial_conn_.SetParity(LibSerial::Parity::PARITY_NONE);
   }
@@ -82,14 +84,16 @@ public:
     std::string _read_str = "";
     std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
     serial_conn_.Write(_send_str);
+    serial_conn_.DrainWriteBuffer();
+
     try
     {
       serial_conn_.ReadLine(_read_str, '\n', 500);
     }
     catch (const LibSerial::ReadTimeout &)
     {
-      // std::cerr << "The ReadByte() call has timed out." << std::endl;
-      // _read_str = "read timeout!\n";
+      if (print_output)
+        std::cerr << "The ReadByte() call has timed out." << std::endl;
       return false;
     }
     if (print_output)
@@ -105,7 +109,16 @@ public:
     {
       uLong crc_value = 0;
       std::string crc_str = _read_str.substr(0, startIndex);
-      crc_value = std::stoul(crc_str);
+      try
+      {
+        crc_value = std::stoul(crc_str);
+      }
+      catch (const std::exception &e)
+      {
+        if (print_output)
+          std::cerr << "sub string error " << e.what() << '\n';
+        return false;
+      }
 
       std::string str_to_parse = _read_str.substr(startIndex, stopIndex - startIndex + 1);
       // std::cout << crc_str << " - " << str_to_parse << std::endl;
@@ -132,35 +145,34 @@ public:
 
   bool write_hardware_command(const std::string &msg_to_send, bool print_output = false)
   {
-    uLong crc_cal = crc32(0L, Z_NULL, 0);
 
     unsigned char bytes[msg_to_send.length()];
     std::memcpy(bytes, msg_to_send.data(), msg_to_send.length());
 
+    uLong crc_cal = crc32(0L, Z_NULL, 0);
     crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
     const std::string msg_to_serial = std::to_string(crc_cal) + msg_to_send + "\r\n";
-    // std::cout << "send: " << msg_to_serial;
-    // serial_conn_.FlushIOBuffers();
-    // serial_conn_.FlushOutputBuffer();
+    // const std::string msg_to_serial = "326728755{\"topic\":\"ros2_control\",\"velocity\":[0.00,0.00,0.00,0.00]}\r\n";
+
     serial_conn_.Write(msg_to_serial);
-    // std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
-    // serial_conn_.Write(_send_str);
+    serial_conn_.DrainWriteBuffer();
 
     std::string response = "";
     try
     {
-      serial_conn_.ReadLine(response, '\n', 500);
+      serial_conn_.ReadLine(response, '\n', 50);
     }
     catch (const LibSerial::ReadTimeout &)
     {
-      // std::cerr << "The ReadByte() call has timed out." << std::endl;
+      if (print_output)
+        std::cerr << "The ReadByte() call has timed out." << std::endl;
       return false;
     }
 
     if (print_output)
     {
-      // std::cout << "==> " << msg_to_serial;
-      // std::cout << "<== " << response;
+      std::cout << "==> " << msg_to_serial;
+      std::cout << "<== " << response;
     }
 
     return true;

@@ -4,6 +4,7 @@ KERNEL=="ttyUSB*", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE:="077
 # CP2104 USB Device
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 2.00", MODE:="0777", SYMLINK+="agv-driver"
 # CP2102 USB Device
-KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", MODE:="0777", SYMLINK+="ldlidar"
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", ATTRS{devpath}=="2.2", MODE:="0777", SYMLINK+="ldlidar"
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", ATTRS{devpath}=="7", MODE:="0777", SYMLINK+="bno085"
 # CH341 USB Device
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="5523", MODE:="0777", SYMLINK+="ch341"
