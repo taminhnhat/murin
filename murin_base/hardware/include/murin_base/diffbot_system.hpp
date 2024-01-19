@@ -49,7 +49,8 @@ namespace murin_base
       std::string front_left_wheel_name = "";
       std::string front_right_wheel_name = "";
       float loop_rate = 0.0;
-      std::string device = "";
+      std::string robot_driver = "";
+      std::string robot_imu = "";
       int baud_rate = 0;
       int timeout_ms = 0;
       int reconnect_timeout_ms = 5000;
@@ -98,7 +99,7 @@ namespace murin_base
         const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
   private:
-    ArduinoComms comms_;
+    ArduinoComms robot_driver, robot_imu;
     NamedPipe pipe_;
     Config cfg_;
     Wheel wheel_rear_l_;

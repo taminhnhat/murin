@@ -80,7 +80,6 @@ public:
 
   bool read_hardware_states(std::string &str_out, bool print_output = false)
   {
-    // serial_conn_.FlushIOBuffers();
     std::string _read_str = "";
     std::string _send_str = "150088878{\"topic\":\"ros2_state\"}\r\n";
     serial_conn_.Write(_send_str);
@@ -176,6 +175,72 @@ public:
     }
 
     return true;
+  }
+
+  bool tranmistion(const std::string &str_send, std::string &str_receive, bool print_output = false)
+  {
+    unsigned char bytes[str_send.length()];
+    std::memcpy(bytes, str_send.data(), str_send.length());
+
+    uLong crc_cal = crc32(0L, Z_NULL, 0);
+    crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
+    const std::string _send_str = std::to_string(crc_cal) + str_send + "\r\n";
+
+    serial_conn_.Write(_send_str);
+    serial_conn_.DrainWriteBuffer();
+
+    std::string _read_str = "";
+    try
+    {
+      serial_conn_.ReadLine(_read_str, '\n', 500);
+    }
+    catch (const LibSerial::ReadTimeout &)
+    {
+      if (print_output)
+        std::cerr << "The ReadByte() call has timed out." << std::endl;
+      return false;
+    }
+    if (print_output)
+    {
+      std::cout << "==> " << _send_str;
+      std::cout << "<== " << _read_str;
+    }
+    std::size_t startIndex = _read_str.find_first_of("{");
+    std::size_t stopIndex = _read_str.find_last_of("}");
+    // std::cout << _read_str.length() << " - " << startIndex << " - " << stopIndex << std::endl;
+
+    if (startIndex != std::string::npos && stopIndex != std::string::npos)
+    {
+      uLong crc_value = 0;
+      std::string crc_str = _read_str.substr(0, startIndex);
+      try
+      {
+        crc_value = std::stoul(crc_str);
+      }
+      catch (const std::exception &e)
+      {
+        if (print_output)
+          std::cerr << "sub string error " << e.what() << '\n';
+        return false;
+      }
+
+      std::string str_to_parse = _read_str.substr(startIndex, stopIndex - startIndex + 1);
+      uLong crc_cal = crc32(0L, Z_NULL, 0);
+
+      unsigned char bytes[str_to_parse.length()];
+      std::memcpy(bytes, str_to_parse.data(), str_to_parse.length());
+
+      crc_cal = crc32(crc_cal, (const Bytef *)bytes, sizeof(bytes));
+      if (crc_value == crc_cal)
+      {
+        str_receive = str_to_parse;
+        return true;
+      }
+      else
+        return false;
+    }
+    else
+      return false;
   }
 
 private:

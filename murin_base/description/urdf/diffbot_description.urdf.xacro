@@ -57,14 +57,14 @@
 
     <joint name="${prefix}rear_left_wheel_joint" type="continuous">
       <parent link="${prefix}base_link"/>
-      <child link="${prefix}left_wheel"/>
-      <origin xyz="-${wheel_offset_x} -${wheel_offset_y} 0" rpy="0 0 0"/>
+      <child link="${prefix}rear_left_wheel"/>
+      <origin xyz="-${wheel_offset_x} ${wheel_offset_y} 0" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <dynamics damping="0.2"/>
     </joint>
 
     <!-- left wheel Link -->
-    <link name="${prefix}left_wheel">
+    <link name="${prefix}rear_left_wheel">
       <collision>
         <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
         <geometry>
@@ -93,7 +93,7 @@
     <joint name="${prefix}front_left_wheel_joint" type="continuous">
       <parent link="${prefix}base_link"/>
       <child link="${prefix}front_left_wheel"/>
-      <origin xyz="${wheel_offset_x} -${wheel_offset_y} 0" rpy="0 0 0"/>
+      <origin xyz="${wheel_offset_x} ${wheel_offset_y} 0" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <dynamics damping="0.2"/>
     </joint>
@@ -127,14 +127,14 @@
 
     <joint name="${prefix}rear_right_wheel_joint" type="continuous">
       <parent link="${prefix}base_link"/>
-      <child link="${prefix}right_wheel"/>
-      <origin xyz="-${wheel_offset_x} ${wheel_offset_y} 0" rpy="0 0 0"/>
+      <child link="${prefix}rear_right_wheel"/>
+      <origin xyz="-${wheel_offset_x} -${wheel_offset_y} 0" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <dynamics damping="0.2"/>
     </joint>
 
     <!-- right wheel Link -->
-    <link name="${prefix}right_wheel">
+    <link name="${prefix}rear_right_wheel">
       <collision>
         <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
         <geometry>
@@ -163,7 +163,7 @@
     <joint name="${prefix}front_right_wheel_joint" type="continuous">
       <parent link="${prefix}base_link"/>
       <child link="${prefix}front_right_wheel"/>
-      <origin xyz="${wheel_offset_x} ${wheel_offset_y} 0" rpy="0 0 0"/>
+      <origin xyz="${wheel_offset_x} -${wheel_offset_y} 0" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <dynamics damping="0.2"/>
     </joint>

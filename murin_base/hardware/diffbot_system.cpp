@@ -42,7 +42,8 @@ namespace murin_base
     cfg_.front_right_wheel_name = info_.hardware_parameters["front_right_wheel_name"];
     cfg_.front_left_wheel_name = info_.hardware_parameters["front_left_wheel_name"];
     cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
-    cfg_.device = info_.hardware_parameters["device"];
+    cfg_.robot_driver = info_.hardware_parameters["robot_driver"];
+    cfg_.robot_imu = info_.hardware_parameters["robot_imu"];
     cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
     cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
     if (info_.hardware_parameters.count("pid_p") > 0)
@@ -165,13 +166,25 @@ namespace murin_base
   hardware_interface::CallbackReturn murin_base_hardware::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Configuring ...please wait...");
-    if (comms_.connected())
+    // config robot driver
+    if (robot_driver.connected())
     {
-      comms_.disconnect();
+      robot_driver.disconnect();
     }
-    comms_.init(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
-    comms_.connect();
-    if (!comms_.connected())
+    robot_driver.init(cfg_.robot_driver, cfg_.baud_rate, cfg_.timeout_ms);
+    robot_driver.connect();
+    if (!robot_driver.connected())
+    {
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+    // config imu
+    if (robot_imu.connected())
+    {
+      robot_imu.disconnect();
+    }
+    robot_imu.init(cfg_.robot_imu, cfg_.baud_rate, cfg_.timeout_ms);
+    robot_imu.connect();
+    if (!robot_imu.connected())
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
@@ -182,9 +195,13 @@ namespace murin_base
   hardware_interface::CallbackReturn murin_base_hardware::on_cleanup(const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Cleaning up ...please wait...");
-    if (comms_.connected())
+    if (robot_driver.connected())
     {
-      comms_.disconnect();
+      robot_driver.disconnect();
+    }
+    if (robot_imu.connected())
+    {
+      robot_imu.disconnect();
     }
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully cleaned up!");
 
@@ -194,7 +211,11 @@ namespace murin_base
   hardware_interface::CallbackReturn murin_base_hardware::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Activating ...please wait...");
-    if (!comms_.connected())
+    if (!robot_driver.connected())
+    {
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+    if (!robot_imu.connected())
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
@@ -213,24 +234,29 @@ namespace murin_base
 
   hardware_interface::return_type murin_base_hardware::read(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
   {
-    if (!comms_.connected())
+    if (!robot_driver.connected())
     {
       return hardware_interface::return_type::ERROR;
     }
-    std::string read_str = "";
-    if (comms_.read_hardware_states(read_str, false))
+    if (!robot_imu.connected())
     {
-      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", read_str.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+    // read form robot driver
+    std::string driver_response = "";
+    if (robot_driver.read_hardware_states(driver_response, false))
+    {
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", driver_response.c_str());
       Json::Value root;
       Json::Reader reader;
-      bool parsingSuccessful = reader.parse(read_str, root);
+      bool parsingSuccessful = reader.parse(driver_response, root);
       if (!parsingSuccessful)
       {
         RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
         return hardware_interface::return_type::OK;
       }
 
-      if (pipe_.writeLine(read_str, false) == -1)
+      if (pipe_.writeLine(driver_response, false) == -1)
       {
         RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
@@ -249,6 +275,31 @@ namespace murin_base
       wheel_rear_r_.pos = position[1].asDouble();
       wheel_rear_l_.pos = position[2].asDouble();
       wheel_front_l_.pos = position[3].asDouble();
+    }
+    else
+    {
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge drop");
+    }
+
+    // read from imu
+    std::string imu_response = "";
+    if (robot_imu.read_hardware_states(imu_response, false))
+    {
+      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", imu_response.c_str());
+      Json::Value root;
+      Json::Reader reader;
+      bool parsingSuccessful = reader.parse(imu_response, root);
+      if (!parsingSuccessful)
+      {
+        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
+        return hardware_interface::return_type::OK;
+      }
+
+      if (pipe_.writeLine(imu_response, false) == -1)
+      {
+        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
+        return hardware_interface::return_type::OK;
+      }
 
       const auto orientation = root["ori"];
       orientation_values_[0] = orientation[0].asDouble();
@@ -276,7 +327,11 @@ namespace murin_base
 
   hardware_interface::return_type murin_base ::murin_base_hardware::write(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
   {
-    if (!comms_.connected())
+    if (!robot_driver.connected())
+    {
+      return hardware_interface::return_type::ERROR;
+    }
+    if (!robot_imu.connected())
     {
       return hardware_interface::return_type::ERROR;
     }
@@ -288,7 +343,7 @@ namespace murin_base
     char cmd[100];
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg(cmd);
-    if (!comms_.write_hardware_command(msg, false))
+    if (!robot_driver.write_hardware_command(msg, false))
       RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot bridge drop");
     else
       RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Writing] >>> %s", msg.c_str());

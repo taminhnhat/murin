@@ -8,8 +8,9 @@
             <param name="rear_left_wheel_name">rear_left_wheel_joint</param>
             <param name="front_right_wheel_name">front_right_wheel_joint</param>
             <param name="rear_right_wheel_name">rear_right_wheel_joint</param>
-            <param name="loop_rate">30</param>
-            <param name="device">/dev/agv-driver</param>
+            <param name="loop_rate">50</param>
+            <param name="robot_driver">/dev/robot_driver</param>
+            <param name="robot_imu">/dev/robot_imu</param>
             <param name="baud_rate">460800</param>
             <param name="timeout_ms">1000</param>
         </hardware>
