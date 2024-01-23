@@ -45,7 +45,6 @@ public:
     void setup(const char *_path)
     {
         strcpy(fifo_path, _path);
-        std::cout << _path << " create fifo " << fifo_path << std::endl;
         mkfifo(fifo_path, 0666);
     }
 
