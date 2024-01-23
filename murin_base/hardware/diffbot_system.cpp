@@ -188,6 +188,12 @@ namespace murin_base
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
+
+    const char *driver_fifo_path = "/tmp/robot_driver";
+    const char *imu_fifo_path = "/tmp/robot_imu";
+    robot_driver_pipe.setup(driver_fifo_path);
+    robot_imu_pipe.setup(imu_fifo_path);
+
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
@@ -256,7 +262,7 @@ namespace murin_base
         return hardware_interface::return_type::OK;
       }
 
-      if (pipe_.writeLine(driver_response, false) == -1)
+      if (robot_driver_pipe.writeLine(driver_response, false) == -1)
       {
         RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
@@ -278,7 +284,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge drop");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot driver drop");
     }
 
     // read from imu
@@ -295,13 +301,13 @@ namespace murin_base
         return hardware_interface::return_type::OK;
       }
 
-      if (pipe_.writeLine(imu_response, false) == -1)
+      if (robot_imu_pipe.writeLine(imu_response, false) == -1)
       {
         RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
         return hardware_interface::return_type::OK;
       }
 
-      const auto orientation = root["ori"];
+      const auto orientation = root["qua"];
       orientation_values_[0] = orientation[0].asDouble();
       orientation_values_[1] = orientation[1].asDouble();
       orientation_values_[2] = orientation[2].asDouble();
@@ -319,7 +325,7 @@ namespace murin_base
     }
     else
     {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot bridge drop");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot imu drop");
     }
 
     return hardware_interface::return_type::OK;
@@ -328,10 +334,6 @@ namespace murin_base
   hardware_interface::return_type murin_base ::murin_base_hardware::write(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
   {
     if (!robot_driver.connected())
-    {
-      return hardware_interface::return_type::ERROR;
-    }
-    if (!robot_imu.connected())
     {
       return hardware_interface::return_type::ERROR;
     }
@@ -344,7 +346,7 @@ namespace murin_base
     sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg(cmd);
     if (!robot_driver.write_hardware_command(msg, false))
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot bridge drop");
+      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot driver drop");
     else
       RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Writing] >>> %s", msg.c_str());
 

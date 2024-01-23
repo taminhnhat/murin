@@ -100,7 +100,7 @@ namespace murin_base
 
   private:
     ArduinoComms robot_driver, robot_imu;
-    NamedPipe pipe_;
+    NamedPipe robot_driver_pipe, robot_imu_pipe;
     Config cfg_;
     Wheel wheel_rear_l_;
     Wheel wheel_rear_r_;
