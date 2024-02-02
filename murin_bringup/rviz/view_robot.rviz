@@ -6,16 +6,15 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1
-        - /RobotModel1/Links1
-        - /RobotModel1/Links1/chassis1
-        - /TF1
         - /TF1/Frames1
-        - /Imu1
         - /Imu1/Acceleration properties1
         - /LaserScan1/Topic1
         - /Raw Image1
         - /Raw Image1/Topic1
+        - /Odometry1
+        - /Odometry1/Shape1
+        - /Odometry2
+        - /Odometry2/Shape1
       Splitter Ratio: 0.5
     Tree Height: 625
   - Class: rviz_common/Selection
@@ -156,8 +155,6 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: true
-        laser_frame:
-          Value: false
         lidar_link:
           Value: false
         odom:
@@ -187,8 +184,6 @@ Visualization Manager:
               {}
             imu_link:
               {}
-            laser_frame:
-              {}
             lidar_link:
               {}
             rear_left_wheel:
@@ -214,7 +209,7 @@ Visualization Manager:
         y_scale: 1
         z_scale: 1
       Class: rviz_imu_plugin/Imu
-      Enabled: true
+      Enabled: false
       Name: Imu
       Topic:
         Depth: 5
@@ -223,7 +218,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /imu_sensor_broadcaster/imu
-      Value: true
+      Value: false
       fixed_frame_orientation: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
@@ -321,6 +316,84 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /camera/color/image_raw
       Value: false
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 0.800000011920929
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /odometry/filtered
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 0.800000011920929
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 28; 113; 216
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /diffbot_base_controller/odom
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -367,25 +440,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.6069278120994568
+      Distance: 3.8866329193115234
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.002137030940502882
-        Y: -0.08989661931991577
-        Z: -0.027618909254670143
+        X: -0.42828837037086487
+        Y: 0.7924966216087341
+        Z: -0.6765533685684204
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.48979783058166504
+      Pitch: 0.6497980952262878
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.604691505432129
+      Yaw: 5.492833137512207
     Saved: ~
 Window Geometry:
   Displays:

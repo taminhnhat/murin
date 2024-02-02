@@ -24,7 +24,6 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('minimal_publisher')
         self.publisher_ = self.create_publisher(Twist, 'ws_vel', 10)
-        self.publisher_hello = self.create_publisher(String, 'hello', 10)
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
@@ -46,7 +45,6 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         # msg = String()
         # msg.data = 'Hello World: %d' % self.i
-        # self.publisher_hello.publish(msg)
         # self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1
 
