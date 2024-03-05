@@ -7,5 +7,6 @@ KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{vers
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", ATTRS{devpath}=="2.1", MODE:="0777", SYMLINK+="robot_lidar"
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", ATTRS{devpath}=="3", MODE:="0777", SYMLINK+="robot_imu"
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{version}==" 1.10", ATTRS{devpath}=="7", MODE:="0777", SYMLINK+="robot_imu"
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE:="0777", SYMLINK+="robot_gps"
 # CH341 USB Device
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="5523", MODE:="0777", SYMLINK+="ch341"

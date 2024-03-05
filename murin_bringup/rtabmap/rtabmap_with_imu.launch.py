@@ -23,7 +23,7 @@ def generate_launch_description():
         'approx_sync': False,}]
 
     remappings = [
-        ('imu', '/imu'),
+        ('imu', '/imu_sensor_broadcaster/imu'),
         ('rgb/image', '/camera/color/image_raw'),
         ('rgb/camera_info', '/camera/color/camera_info'),
         ('depth/image', '/camera/aligned_depth_to_color/image_raw')]
