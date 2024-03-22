@@ -11,10 +11,11 @@ Panels:
         - /LaserScan1/Topic1
         - /Raw Image1
         - /Raw Image1/Topic1
-        - /Odometry1
-        - /Odometry1/Shape1
-        - /Odometry2
-        - /Odometry2/Shape1
+        - /EKF Odometry1/Shape1
+        - /Wheel Odometry1/Shape1
+        - /Vision Odometry1/Status1
+        - /Vision Odometry1/Topic1
+        - /Vision Odometry1/Shape1
       Splitter Ratio: 0.5
     Tree Height: 625
   - Class: rviz_common/Selection
@@ -34,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Visualization Manager:
   Class: ""
   Displays:
@@ -143,8 +144,14 @@ Visualization Manager:
           Value: false
         base_link:
           Value: false
+        camera_color_frame:
+          Value: true
+        camera_color_optical_frame:
+          Value: true
         camera_depth_frame:
           Value: false
+        camera_depth_optical_frame:
+          Value: true
         camera_link:
           Value: true
         chassis:
@@ -157,6 +164,8 @@ Visualization Manager:
           Value: true
         lidar_link:
           Value: false
+        map:
+          Value: true
         odom:
           Value: true
         rear_left_wheel:
@@ -169,27 +178,32 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        odom:
-          base_link:
-            base_footprint:
-              {}
-            camera_link:
-              camera_depth_frame:
+        map:
+          odom:
+            base_link:
+              base_footprint:
                 {}
-            chassis:
-              {}
-            front_left_wheel:
-              {}
-            front_right_wheel:
-              {}
-            imu_link:
-              {}
-            lidar_link:
-              {}
-            rear_left_wheel:
-              {}
-            rear_right_wheel:
-              {}
+              chassis:
+                {}
+              front_left_wheel:
+                {}
+              front_right_wheel:
+                {}
+              imu_link:
+                {}
+              lidar_link:
+                {}
+              rear_left_wheel:
+                {}
+              rear_right_wheel:
+                {}
+            camera_link:
+              camera_color_frame:
+                camera_color_optical_frame:
+                  {}
+              camera_depth_frame:
+                camera_depth_optical_frame:
+                  {}
       Update Interval: 0
       Value: true
     - Acceleration properties:
@@ -333,9 +347,9 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 100
-      Name: Odometry
+      Name: EKF Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
         Alpha: 0.800000011920929
@@ -354,7 +368,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /odometry/filtered
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz_default_plugins/Odometry
       Covariance:
@@ -374,7 +388,7 @@ Visualization Manager:
         Value: true
       Enabled: true
       Keep: 100
-      Name: Odometry
+      Name: Wheel Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
         Alpha: 0.800000011920929
@@ -394,6 +408,45 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /diffbot_base_controller/odom
       Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: false
+      Keep: 100
+      Name: Vision Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 0.800000011920929
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 46; 194; 126
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /odom
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -440,25 +493,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.8866329193115234
+      Distance: 4.213802337646484
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.42828837037086487
-        Y: 0.7924966216087341
-        Z: -0.6765533685684204
+        X: 0.15344107151031494
+        Y: -0.47160810232162476
+        Z: 0.12755262851715088
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6497980952262878
+      Pitch: 0.6647980809211731
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.492833137512207
+      Yaw: 3.1028335094451904
     Saved: ~
 Window Geometry:
   Displays:

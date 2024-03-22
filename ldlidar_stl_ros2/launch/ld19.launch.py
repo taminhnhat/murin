@@ -47,8 +47,8 @@ def generate_launch_description():
             {'frame_id': 'base_laser'},
             {'laser_scan_dir': True},
             {'enable_angle_crop_func': True},
-            {'angle_crop_min': 90.0},
-            {'angle_crop_max': 270.0}
+            {'angle_crop_min': 115.0},
+            {'angle_crop_max': 260.0}
         ]
     )
 

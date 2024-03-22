@@ -16,7 +16,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     parameters = [{
-        'frame_id': 'camera_link',
+        'frame_id': 'base_link',
         'subscribe_depth': True,
         'subscribe_odom_info': True,
         'wait_imu_to_init':True,
