@@ -39,7 +39,7 @@
             <state_interface name="velocity"/>
         </joint>
 
-        <sensor name='mpu6050'>
+        <!-- <sensor name='mpu6050'>
         <state_interface name='orientation.x'/>
         <state_interface name='orientation.y'/>
         <state_interface name='orientation.z'/>
@@ -50,7 +50,7 @@
         <state_interface name='linear_acceleration.x'/>
         <state_interface name='linear_acceleration.y'/>
         <state_interface name='linear_acceleration.z'/>  
-      </sensor>
+      </sensor> -->
     </ros2_control>
 
 </robot>

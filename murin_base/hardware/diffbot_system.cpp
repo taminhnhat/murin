@@ -43,7 +43,7 @@ namespace murin_base
     cfg_.front_left_wheel_name = info_.hardware_parameters["front_left_wheel_name"];
     cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
     cfg_.robot_driver = info_.hardware_parameters["robot_driver"];
-    cfg_.robot_imu = info_.hardware_parameters["robot_imu"];
+    // cfg_.robot_imu = info_.hardware_parameters["robot_imu"];
     cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
     cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
     if (info_.hardware_parameters.count("pid_p") > 0)
@@ -131,19 +131,19 @@ namespace murin_base
     // front right wheel
     state_interfaces.emplace_back(hardware_interface::StateInterface(wheel_front_r_.name, hardware_interface::HW_IF_POSITION, &wheel_front_r_.pos));
     state_interfaces.emplace_back(hardware_interface::StateInterface(wheel_front_r_.name, hardware_interface::HW_IF_VELOCITY, &wheel_front_r_.vel));
-    // assign values to orientation
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[0], &orientation_values_[0]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[1], &orientation_values_[1]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[2], &orientation_values_[2]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[3], &orientation_values_[3]));
-    // assign values to angular velocity
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[4], &angular_velocity_values_[0]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[5], &angular_velocity_values_[1]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[6], &angular_velocity_values_[2]));
-    // assign values to linear acceleration
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[7], &linear_acceleration_values_[0]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[8], &linear_acceleration_values_[1]));
-    state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[9], &linear_acceleration_values_[2]));
+    // // assign values to orientation
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[0], &orientation_values_[0]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[1], &orientation_values_[1]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[2], &orientation_values_[2]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[3], &orientation_values_[3]));
+    // // assign values to angular velocity
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[4], &angular_velocity_values_[0]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[5], &angular_velocity_values_[1]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[6], &angular_velocity_values_[2]));
+    // // assign values to linear acceleration
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[7], &linear_acceleration_values_[0]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[8], &linear_acceleration_values_[1]));
+    // state_interfaces.emplace_back(hardware_interface::StateInterface(sensor_name_, imu_interface_names_[9], &linear_acceleration_values_[2]));
 
     return state_interfaces;
   }
@@ -177,22 +177,22 @@ namespace murin_base
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    // config imu
-    if (robot_imu.connected())
-    {
-      robot_imu.disconnect();
-    }
-    robot_imu.init(cfg_.robot_imu, cfg_.baud_rate, cfg_.timeout_ms);
-    robot_imu.connect();
-    if (!robot_imu.connected())
-    {
-      return hardware_interface::CallbackReturn::ERROR;
-    }
+    // // config imu
+    // if (robot_imu.connected())
+    // {
+    //   robot_imu.disconnect();
+    // }
+    // robot_imu.init(cfg_.robot_imu, cfg_.baud_rate, cfg_.timeout_ms);
+    // robot_imu.connect();
+    // if (!robot_imu.connected())
+    // {
+    //   return hardware_interface::CallbackReturn::ERROR;
+    // }
 
     const char *driver_fifo_path = "/tmp/robot_driver";
-    const char *imu_fifo_path = "/tmp/robot_imu";
+    // const char *imu_fifo_path = "/tmp/robot_imu";
     robot_driver_pipe.setup(driver_fifo_path);
-    robot_imu_pipe.setup(imu_fifo_path);
+    // robot_imu_pipe.setup(imu_fifo_path);
 
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -205,10 +205,10 @@ namespace murin_base
     {
       robot_driver.disconnect();
     }
-    if (robot_imu.connected())
-    {
-      robot_imu.disconnect();
-    }
+    // if (robot_imu.connected())
+    // {
+    //   robot_imu.disconnect();
+    // }
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully cleaned up!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -221,10 +221,10 @@ namespace murin_base
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    if (!robot_imu.connected())
-    {
-      return hardware_interface::CallbackReturn::ERROR;
-    }
+    // if (!robot_imu.connected())
+    // {
+    //   return hardware_interface::CallbackReturn::ERROR;
+    // }
     RCLCPP_INFO(rclcpp::get_logger("murin_base_hardware"), "Successfully activated!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -244,10 +244,10 @@ namespace murin_base
     {
       return hardware_interface::return_type::ERROR;
     }
-    if (!robot_imu.connected())
-    {
-      return hardware_interface::return_type::ERROR;
-    }
+    // if (!robot_imu.connected())
+    // {
+    //   return hardware_interface::return_type::ERROR;
+    // }
     // read form robot driver
     std::string driver_response = "";
     if (robot_driver.read_hardware_states(driver_response, false))
@@ -287,46 +287,46 @@ namespace murin_base
       RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot driver drop");
     }
 
-    // read from imu
-    std::string imu_response = "";
-    if (robot_imu.read_hardware_states(imu_response, false))
-    {
-      RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", imu_response.c_str());
-      Json::Value root;
-      Json::Reader reader;
-      bool parsingSuccessful = reader.parse(imu_response, root);
-      if (!parsingSuccessful)
-      {
-        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
-        return hardware_interface::return_type::OK;
-      }
+    // // read from imu
+    // std::string imu_response = "";
+    // if (robot_imu.read_hardware_states(imu_response, false))
+    // {
+    //   RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "[Reading] <<< %s", imu_response.c_str());
+    //   Json::Value root;
+    //   Json::Reader reader;
+    //   bool parsingSuccessful = reader.parse(imu_response, root);
+    //   if (!parsingSuccessful)
+    //   {
+    //     RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
+    //     return hardware_interface::return_type::OK;
+    //   }
 
-      if (robot_imu_pipe.writeLine(imu_response, false) == -1)
-      {
-        RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
-        return hardware_interface::return_type::OK;
-      }
+    //   if (robot_imu_pipe.writeLine(imu_response, false) == -1)
+    //   {
+    //     RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Fail writing to pipe! Closed pipe.");
+    //     return hardware_interface::return_type::OK;
+    //   }
 
-      const auto orientation = root["qua"];
-      orientation_values_[0] = orientation[0].asDouble();
-      orientation_values_[1] = orientation[1].asDouble();
-      orientation_values_[2] = orientation[2].asDouble();
-      orientation_values_[3] = orientation[3].asDouble();
+    //   const auto orientation = root["qua"];
+    //   orientation_values_[0] = orientation[0].asDouble();
+    //   orientation_values_[1] = orientation[1].asDouble();
+    //   orientation_values_[2] = orientation[2].asDouble();
+    //   orientation_values_[3] = orientation[3].asDouble();
 
-      const auto gyroscope = root["gyr"];
-      angular_velocity_values_[0] = gyroscope[0].asDouble();
-      angular_velocity_values_[1] = gyroscope[1].asDouble();
-      angular_velocity_values_[2] = gyroscope[2].asDouble();
+    //   const auto gyroscope = root["gyr"];
+    //   angular_velocity_values_[0] = gyroscope[0].asDouble();
+    //   angular_velocity_values_[1] = gyroscope[1].asDouble();
+    //   angular_velocity_values_[2] = gyroscope[2].asDouble();
 
-      const auto acceleration = root["acc"];
-      linear_acceleration_values_[0] = acceleration[0].asDouble();
-      linear_acceleration_values_[1] = acceleration[1].asDouble();
-      linear_acceleration_values_[2] = acceleration[2].asDouble();
-    }
-    else
-    {
-      RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot imu drop");
-    }
+    //   const auto acceleration = root["acc"];
+    //   linear_acceleration_values_[0] = acceleration[0].asDouble();
+    //   linear_acceleration_values_[1] = acceleration[1].asDouble();
+    //   linear_acceleration_values_[2] = acceleration[2].asDouble();
+    // }
+    // else
+    // {
+    //   RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Reading] Robot imu drop");
+    // }
 
     return hardware_interface::return_type::OK;
   }
@@ -343,7 +343,7 @@ namespace murin_base
     double front_left_vel = wheel_front_l_.cmd;
     double rear_left_vel = wheel_rear_l_.cmd;
     char cmd[100];
-    sprintf(cmd, "{\"topic\":\"ros2_control\",\"velocity\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
+    sprintf(cmd, "{\"topic\":\"ros2_control\",\"vel\":[%.2f,%.2f,%.2f,%.2f]}", front_right_vel, rear_right_vel, rear_left_vel, front_left_vel);
     std::string msg(cmd);
     if (!robot_driver.write_hardware_command(msg, false))
       RCLCPP_WARN(rclcpp::get_logger("murin_base_hardware"), "[Writing] Robot driver drop");

@@ -109,10 +109,10 @@ namespace murin_base
     double battery;
 
     const size_t size_ = 10;
-    const std::string sensor_name_ = "mpu6050";
-    std::array<double, 4> orientation_values_ = {1.1, 2.2, 3.3, 4.4};
-    std::array<double, 3> angular_velocity_values_ = {4.4, 5.5, 6.6};
-    std::array<double, 3> linear_acceleration_values_ = {4.4, 5.5, 6.6};
+    // const std::string sensor_name_ = "mpu6050";
+    std::array<double, 4> orientation_values_ = {0, 0, 0, 1};
+    std::array<double, 3> angular_velocity_values_ = {0, 0, 0};
+    std::array<double, 3> linear_acceleration_values_ = {0, 0, 0};
     // std::unique_ptr<TestableIMUSensor> imu_sensor_;
     const std::vector<std::string> imu_interface_names_ = {
         "orientation.x", "orientation.y", "orientation.z", "orientation.w",

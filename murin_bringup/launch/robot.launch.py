@@ -128,7 +128,7 @@ def generate_launch_description():
         control_node,
         robot_state_pub_node,
         joint_state_broadcaster_spawner_node,
-        imu_sensor_broadcaster_spawner_node,
+        # imu_sensor_broadcaster_spawner_node,
         delayed_robot_controller_spawner,
         # robot_localization_node,
         # delay_rviz_after_joint_state_broadcaster_spawner,
