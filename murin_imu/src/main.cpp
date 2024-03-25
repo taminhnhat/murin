@@ -40,7 +40,7 @@ public:
         _publisherImu = this->create_publisher<sensor_msgs::msg::Imu>("bno085/imu", 10);
         _publisherMagneticField = this->create_publisher<sensor_msgs::msg::MagneticField>("bno085/mag", 10);
         timer_ = this->create_wall_timer(
-            20ms, std::bind(&MinimalPublisher::timer_callback, this));
+            10ms, std::bind(&MinimalPublisher::timer_callback, this));
         serial_conn_.Open("/dev/robot_imu");
         serial_conn_.SetBaudRate(LibSerial::BaudRate::BAUD_460800);
         serial_conn_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
@@ -71,8 +71,8 @@ private:
         {
             std::cerr << "The ReadByte() call has timed out." << std::endl;
         }
-        RCLCPP_DEBUG(rclcpp::get_logger("murin_imu"), "==> %s", _send_str.c_str());
-        RCLCPP_DEBUG(rclcpp::get_logger("murin_imu"), "<== %s", _read_str.c_str());
+        RCLCPP_INFO(this->get_logger(), "==> %s", _send_str.c_str());
+        RCLCPP_INFO(this->get_logger(), "<== %s", _read_str.c_str());
 
         std::size_t startIndex = _read_str.find_first_of("{");
         std::size_t stopIndex = _read_str.find_last_of("}");
@@ -106,7 +106,7 @@ private:
                 bool parsingSuccessful = reader.parse(str_to_parse, root);
                 if (!parsingSuccessful)
                 {
-                    RCLCPP_DEBUG(rclcpp::get_logger("murin_base_hardware"), "Error parsing the string from serial");
+                    RCLCPP_WARN(this->get_logger(), "Error parsing the string from serial");
                 }
 
                 const auto orientation = root["qua"];
