@@ -35,7 +35,7 @@ class MinimalPublisher : public rclcpp::Node
 {
 public:
     MinimalPublisher()
-        : Node("minimal_publisher"), count_(0)
+        : Node("murin_imu_publisher"), count_(0)
     {
         _publisherImu = this->create_publisher<sensor_msgs::msg::Imu>("bno085/imu", 10);
         _publisherMagneticField = this->create_publisher<sensor_msgs::msg::MagneticField>("bno085/mag", 10);

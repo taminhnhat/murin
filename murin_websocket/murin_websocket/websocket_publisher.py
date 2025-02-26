@@ -22,7 +22,7 @@ def disconnect():
 class MinimalPublisher(Node):
 
     def __init__(self):
-        super().__init__('minimal_publisher')
+        super().__init__('websocket_velocity_publisher')
         self.publisher_ = self.create_publisher(Twist, 'ws_vel', 10)
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
